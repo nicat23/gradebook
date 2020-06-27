@@ -7,27 +7,41 @@ namespace GradeBook
     {
         static void Main(string[] args)
         {
-            var numbers = new double[] { 12.7, 10.3, 6.11, 4.1 };
-            List<double> grades = new List<double>(numbers);
-            double result = 0;
+            var book = new Book("Justin's Grade Book");
+            while (true)
+            {
+                Console.WriteLine("Enter a grade or 'q' to quit");
+                var input = Console.ReadLine();
+                if (input == "q" || input == "Q")
+                {
+                    break;
+                }
+                try
+                {
+                    var grade = double.Parse(input);
+                    book.AddGrade(grade);
+                }
+                catch (ArgumentException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                catch (FormatException ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+                finally
+                {
+                    // ..
+                }
+            }
+            var stats = book.GetStatistics();
 
-            foreach (var item in grades)
-            {
-                Console.WriteLine(item);
-                result += item;
-            }
-            Console.WriteLine(result);
-
-            if (args.Length > 0)
-            {
-                //Console.WriteLine("Hello, Justin!");
-                //Console.WriteLine("Hello, " + args[0] + "!");
-                Console.WriteLine($"Hello, {args[0]}!");
-            }
-            else
-            {
-                Console.WriteLine("Hello!");
-            }
+            Console.WriteLine($"For the grade book named {book.Name}");
+            Console.WriteLine($"Lowest grade: {stats.Low}");
+            Console.WriteLine($"Highest grade: {stats.High}");
+            Console.WriteLine($"Average: {stats.Average:N2}");
+            Console.WriteLine($"The letter grade is {stats.Letter}");
+            //List<double> grades = new List<double>() { 12.7, 10.3, 6.11, 4.1 };
         }
     }
 }
